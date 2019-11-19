@@ -1,0 +1,10 @@
+create github repo
+clone gibhub repo
+npx create-react-app word-frequencies-heroku --typescript
+npm install --save typescript @types/node @types/react @types/react-dom @types/jest
+npm start
+
+create heroku app
+heroku git:remote -a [appname]
+git push heroku master
+
