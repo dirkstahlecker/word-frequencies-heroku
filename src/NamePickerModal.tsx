@@ -1,7 +1,6 @@
 import * as React from "react";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
-import $ from 'jquery';
 import Modal from 'react-modal';
 
 export class NamePickerModalMachine
@@ -17,14 +16,12 @@ export class NamePickerModalMachine
     this.submitClicked = value;
   }
 
-  public updateLastName(): void
-  {
-    this.lastName = $("#lastNameTxt").val() as string;
+  public updateLastName = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.lastName = e.currentTarget.value;
   }
 
-  public updateRealFirstName(): void
-  {
-    this.realFirstName = $("#realFirstNameTxt").val() as string;
+  public updateRealFirstName = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.realFirstName = e.currentTarget.value;
   }
 
   public lastNameTxtInput: any;
@@ -83,7 +80,7 @@ export class NamePickerModal extends React.Component<NamePickerModalProps>
           }
           Last name:&nbsp;
           <input type="text" 
-                 onChange={() => this.props.machine.updateLastName()}
+                 onChange={this.props.machine.updateLastName}
                  id="lastNameTxt"
                  onKeyDown={this.onModalKeyDown}
                  ref={(x) => {
@@ -98,7 +95,7 @@ export class NamePickerModal extends React.Component<NamePickerModalProps>
           <br />
           Real First Name:&nbsp;
           <input type="text" 
-                 onChange={() => this.props.machine.updateRealFirstName()}
+                 onChange={this.props.machine.updateRealFirstName}
                  id="realFirstNameTxt"
                  onKeyDown={this.onModalKeyDown}
                  ref={(x) => {
