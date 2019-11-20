@@ -6,7 +6,6 @@ import {MarkupUtils} from "./MarkupUtils";
 import {JournalReader, JournalReaderMachine} from "./JournalReader";
 // import * as Modal from "react-modal";
 import Modal from "react-modal";
-import $ from "jquery";
 import {NamePickerModal, NamePickerModalMachine} from "./NamePickerModal";
 import {AddMarkupMachine} from "./AddMarkupToExistingEntry";
 // import {Editor, EditorState} from 'draft-js';
@@ -133,21 +132,23 @@ export class App extends React.Component<AppProps>
 {
   @observable currentMarkupHack: string = "";
 
+  //TODO: this hasn't been tested without jquery
   public handleEasyMarkupGeneratorSubmit = (): void => {
-    let firstName: string = $("#firstName").val() as string;
-    let lastName: string = $("#lastName").val() as string;
-    let displayName: string = $("#displayName").val() as string;
+    let firstName: string = document.getElementById("firstName").value as string;
+    let lastName: string = document.getElementById("lastName").value as string;
+    let displayName: string = document.getElementById("displayName").value as string;
 
     this.currentMarkupHack = MarkupUtils.makeMarkup(firstName, lastName, displayName);
-    $("#placeToSelectText").val(this.currentMarkupHack);
+    document.getElementById("placeToSelectText").value = this.currentMarkupHack;
 
     var copyText = document.getElementById("displayCopyArea") as HTMLElement;
     this.selectElementContents(copyText);
     document.execCommand("copy");
 
-    $("#firstName").val("").focus();
-    $("#lastName").val("");
-    $("#displayName").val("");
+    document.getElementById("firstName").value = "";
+    document.getElementById("firstName").focus();
+    document.getElementById("lastName").value = "";
+    document.getElementById("displayName").value = "";
 
 
   };
