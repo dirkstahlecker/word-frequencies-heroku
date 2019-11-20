@@ -134,21 +134,22 @@ export class App extends React.Component<AppProps>
 
   //TODO: this hasn't been tested without jquery
   public handleEasyMarkupGeneratorSubmit = (): void => {
-    let firstName: string = document.getElementById("firstName").value as string;
-    let lastName: string = document.getElementById("lastName").value as string;
-    let displayName: string = document.getElementById("displayName").value as string;
+    //TODO: re-enable
+    // let firstName: string = document.getElementById("firstName").value as string;
+    // let lastName: string = document.getElementById("lastName").value as string;
+    // let displayName: string = document.getElementById("displayName").value as string;
 
-    this.currentMarkupHack = MarkupUtils.makeMarkup(firstName, lastName, displayName);
-    document.getElementById("placeToSelectText").value = this.currentMarkupHack;
+    // this.currentMarkupHack = MarkupUtils.makeMarkup(firstName, lastName, displayName);
+    // document.getElementById("placeToSelectText").value = this.currentMarkupHack;
 
-    var copyText = document.getElementById("displayCopyArea") as HTMLElement;
-    this.selectElementContents(copyText);
-    document.execCommand("copy");
+    // var copyText = document.getElementById("displayCopyArea") as HTMLElement;
+    // this.selectElementContents(copyText);
+    // document.execCommand("copy");
 
-    document.getElementById("firstName").value = "";
-    document.getElementById("firstName").focus();
-    document.getElementById("lastName").value = "";
-    document.getElementById("displayName").value = "";
+    // document.getElementById("firstName").value = "";
+    // document.getElementById("firstName").focus();
+    // document.getElementById("lastName").value = "";
+    // document.getElementById("displayName").value = "";
 
 
   };
