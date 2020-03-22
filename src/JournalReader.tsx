@@ -3,6 +3,7 @@ import * as React from "react";
 import {observable, action} from "mobx";
 import {observer} from "mobx-react";
 import {MarkupUtils} from "./MarkupUtils";
+import "./JournalReader.css";
 
 export interface JournalReaderProps
 {
@@ -29,7 +30,7 @@ export class JournalReaderMachine
 				pieces.map((piece: string) => {
 					if (piece.match(MarkupUtils.MARKUP_REGEX))
 					{
-						return this.replaceMarkupWithDisplayName(piece); //TODO:
+						return this.getHtmlForMarkup(piece); //TODO:
 					}
 					else
 					{
@@ -40,6 +41,22 @@ export class JournalReaderMachine
 		</div>;
 	}
 
+	private getHtmlForMarkup(markup: string): JSX.Element | null
+	{
+		const firstName: string | null = MarkupUtils.getFirstNameFromMarkup(markup);
+		const lastName: string | null = MarkupUtils.getLastNameFromMarkup(markup);
+		const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
+
+		if (firstName == null || lastName == null || displayName == null)
+		{
+			return null;
+		}
+
+		return <span className="rendered-markup-display-name">
+			{displayName}
+			<span className="tooltip">{firstName}&nbsp;{lastName}</span>
+		</span>;
+	}
 
 	private replaceMarkupWithDisplayName(rawText: string): string
 	{

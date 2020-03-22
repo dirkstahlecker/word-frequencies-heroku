@@ -1,0 +1,17 @@
+/* Journal Reader */
+.rendered-markup-display-name {
+  position: relative;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 3px;
+  border: 1px solid black;
+}
+
+.rendered-markup-display-name:hover .tooltip {
+  display: block;
+}
