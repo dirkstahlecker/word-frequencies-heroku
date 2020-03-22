@@ -32,7 +32,7 @@ export class JournalReaderMachine
 				pieces.map((piece: string) => {
 					if (piece === undefined)
 					{
-						return;
+						return "";
 					}
 					if (piece.match(MarkupUtils.MARKUP_REGEX))
 					{
