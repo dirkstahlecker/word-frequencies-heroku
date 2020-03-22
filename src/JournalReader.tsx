@@ -12,6 +12,8 @@ export interface JournalReaderProps
 
 export class JournalReaderMachine
 {
+	private static DATE_REGEX = /\d{1,2}-\d{1,2}-\d{1,2}:/;
+
 	@observable public rawText: string = "";
 
 	@action
@@ -23,14 +25,25 @@ export class JournalReaderMachine
 	public renderJournal(): JSX.Element | null
 	{
 		//eslint-disable-next-line no-useless-escape
-		const pieces: string[] = this.rawText.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])/); //need to groups differently than the static markup in MarkupUtils
+		const pieces: string[] = this.rawText.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])|(\d{1,2}-\d{1,2}-\d{1,2}:)/); //split on markup and dates
 
 		return <div>
 			{
 				pieces.map((piece: string) => {
+					if (piece === undefined)
+					{
+						return;
+					}
 					if (piece.match(MarkupUtils.MARKUP_REGEX))
 					{
-						return this.getHtmlForMarkup(piece); //TODO:
+						return this.getHtmlForMarkup(piece);
+					}
+					else if (piece.match(JournalReaderMachine.DATE_REGEX))
+					{
+						return <>
+							<br/><br/>
+							{piece}
+						</>;
 					}
 					else
 					{
@@ -54,7 +67,9 @@ export class JournalReaderMachine
 
 		return <span className="rendered-markup-display-name">
 			{displayName}
-			<span className="tooltip">{firstName}&nbsp;{lastName}</span>
+			<span className="tooltip">
+				{firstName}&nbsp;{lastName}
+			</span>
 		</span>;
 	}
 

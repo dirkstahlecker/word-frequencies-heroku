@@ -1,6 +1,7 @@
 /* Journal Reader */
 .rendered-markup-display-name {
   position: relative;
+  color: #00F;
 }
 
 .tooltip {
@@ -10,6 +11,10 @@
   left: 0;
   padding: 3px;
   border: 1px solid black;
+  color: #000;
+
+  z-index: 100;
+  background-color: #FFF;
 }
 
 .rendered-markup-display-name:hover .tooltip {
