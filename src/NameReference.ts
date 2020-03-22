@@ -37,6 +37,7 @@ export class NameReference
         "kendra",
         "eleni",
         "jackie",
+        "lani",
         "jacky",
         "elise",
         "kort",

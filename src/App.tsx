@@ -11,6 +11,27 @@ import {AddMarkupMachine} from "./AddMarkupToExistingEntry";
 // import {Editor, EditorState} from 'draft-js';
 import axios from 'axios';
 
+
+
+// const { Client } = require('pg');
+
+// const client = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: true,
+// });
+
+// client.connect();
+
+// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//   if (err) throw err;
+//   for (let row of res.rows) {
+//     console.log(JSON.stringify(row));
+//   }
+//   client.end();
+// });
+
+
+
 Modal.setAppElement(document.getElementById('root')!!);
 
 interface PersonSchema
@@ -30,6 +51,9 @@ export class AppMachine
 
   @observable
   public finalText: string = "";
+
+  @observable
+  private dateStr: string = "";
 
   @observable
   public newJournalEntry: boolean = true;
@@ -55,13 +79,17 @@ export class AppMachine
     return this.currentName != null;
   }
 
+  @action
+  public updateDate = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this.dateStr = e.currentTarget.value;
+  };
+
   public namePickerModalMachine: NamePickerModalMachine = new NamePickerModalMachine();
 
   @action
-  public createFinalText(e: React.MouseEvent<HTMLButtonElement>): void
+  public createFinalText(): void
   {
-    const dateStr: string = e.currentTarget.value;
-    this.finalText = dateStr + ": " + this.journalText;
+    this.finalText = this.dateStr + ": " + this.journalText;
   }
 
   @action
@@ -209,7 +237,7 @@ export class App extends React.Component<AppProps>
             <>
               <label htmlFor="dateEntry">Date: </label>
               <br />
-              <input type="text" id="dateEntry" />
+              <input type="text" id="dateEntry" onChange={this.props.machine.updateDate} />
               <br />
               <br />
               <label htmlFor="journalEntry">Entry: </label>
@@ -221,7 +249,7 @@ export class App extends React.Component<AppProps>
               />
               {/*<MyEditor />*/}
               <br />
-              <button onClick={(e) => this.props.machine.createFinalText(e)}>Submit</button>
+              <button onClick={(e) => this.props.machine.createFinalText()}>Submit</button>
             </>
           }
           {
