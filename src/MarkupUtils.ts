@@ -3,7 +3,8 @@
 export class MarkupUtils
 {
   //eslint-disable-next-line no-useless-escape
-	private static MARKUP_REGEX = /\[!!([^\|]+)\|([^_]+)_([^!]+)!!\]/;
+	public  static MARKUP_REGEX = /\[!!([^\|]+)\|([^_]+)_([^!]+)!!\]/;
+  
   public static makeMarkup(firstName: string, lastName: string, displayName: string = ""): string
   {
       return "[!!" + (displayName === "" ? firstName : displayName) + "|" + firstName + "_" + lastName + "!!]";

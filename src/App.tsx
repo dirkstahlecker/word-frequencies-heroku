@@ -121,6 +121,26 @@ export class AppMachine
     }
   };
 
+    //TODO: this hasn't been tested without jquery
+  public handleEasyMarkupGeneratorSubmit = (): void => {
+    // document.getElementById("firstName");
+    // let firstName: string | null = (document.getElementById("firstName") as HTMLElement);
+    // let lastName: string = document.getElementById("lastName").value as string;
+    // let displayName: string = document.getElementById("displayName").value as string;
+
+    // this.currentMarkupHack = MarkupUtils.makeMarkup(firstName, lastName, displayName);
+    // document.getElementById("placeToSelectText").value = this.currentMarkupHack;
+
+    // var copyText = document.getElementById("displayCopyArea") as HTMLElement;
+    // this.selectElementContents(copyText);
+    // document.execCommand("copy");
+
+    // document.getElementById("firstName").value = "";
+    // document.getElementById("firstName").focus();
+    // document.getElementById("lastName").value = "";
+    // document.getElementById("displayName").value = "";
+  };
+
   public handleModalCloseRequest(commit: boolean): void
   {
     if (!commit) //close without adding markup
@@ -159,28 +179,6 @@ export interface AppProps
 export class App extends React.Component<AppProps>
 {
   @observable currentMarkupHack: string = "";
-
-  //TODO: this hasn't been tested without jquery
-  public handleEasyMarkupGeneratorSubmit = (): void => {
-    //TODO: re-enable
-    // let firstName: string = document.getElementById("firstName").value as string;
-    // let lastName: string = document.getElementById("lastName").value as string;
-    // let displayName: string = document.getElementById("displayName").value as string;
-
-    // this.currentMarkupHack = MarkupUtils.makeMarkup(firstName, lastName, displayName);
-    // document.getElementById("placeToSelectText").value = this.currentMarkupHack;
-
-    // var copyText = document.getElementById("displayCopyArea") as HTMLElement;
-    // this.selectElementContents(copyText);
-    // document.execCommand("copy");
-
-    // document.getElementById("firstName").value = "";
-    // document.getElementById("firstName").focus();
-    // document.getElementById("lastName").value = "";
-    // document.getElementById("displayName").value = "";
-
-
-  };
 
   private selectElementContents(el: any) {
     var range = document.createRange();
@@ -259,7 +257,7 @@ export class App extends React.Component<AppProps>
               if (e.key === "Enter")
               {
                 e.preventDefault();
-                this.handleEasyMarkupGeneratorSubmit();
+                this.props.machine.handleEasyMarkupGeneratorSubmit();
               }
             }}>
               First Name: <input type="text" id="firstName" autoFocus={true}/>
@@ -268,7 +266,7 @@ export class App extends React.Component<AppProps>
               <br />
               Display Name: <input type="text" id="displayName" />
               <br />
-              <button onClick={this.handleEasyMarkupGeneratorSubmit}>Submit</button>
+              <button onClick={this.props.machine.handleEasyMarkupGeneratorSubmit}>Submit</button>
               <br />
               <br />
               <div id="displayCopyArea">

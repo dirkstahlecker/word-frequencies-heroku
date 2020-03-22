@@ -16,8 +16,30 @@ export class JournalReaderMachine
 	@action
 	public updateRawText(value: string): void
 	{
-		this.rawText = this.replaceMarkupWithDisplayName(value);
+		this.rawText = value; // = this.replaceMarkupWithDisplayName(value);
 	}
+
+	public renderJournal(): JSX.Element | null
+	{
+		//eslint-disable-next-line no-useless-escape
+		const pieces: string[] = this.rawText.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])/); //need to groups differently than the static markup in MarkupUtils
+
+		return <div>
+			{
+				pieces.map((piece: string) => {
+					if (piece.match(MarkupUtils.MARKUP_REGEX))
+					{
+						return this.replaceMarkupWithDisplayName(piece); //TODO:
+					}
+					else
+					{
+						return piece;
+					}
+				})
+			}
+		</div>;
+	}
+
 
 	private replaceMarkupWithDisplayName(rawText: string): string
 	{
@@ -49,13 +71,15 @@ export class JournalReader extends React.Component<JournalReaderProps>
 		return this.props.machine;
 	}
 
+//<textarea disabled={true} value={this.machine.rawText} style={{width: "750px", height: "300px"}}/>
 	render()
 	{
 		return <div>
 			<input type="text" onChange={(e) => this.machine.updateRawText(e.currentTarget.value)}/>
 			<br/>
 			<br/>
-			<textarea disabled={true} value={this.machine.rawText} style={{width: "750px", height: "300px"}}/>
+			
+			{this.machine.renderJournal()}
 		</div>;
 	}
 }
