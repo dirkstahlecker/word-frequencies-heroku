@@ -7,7 +7,8 @@ import {JournalWriter, JournalWriterMachine} from "./JournalWriter";
 import Modal from "react-modal";
 // import {Editor, EditorState} from 'draft-js';
 import axios from 'axios';
-
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import 'react-tabs/style/react-tabs.css';
 
 
 // const { Client } = require('pg');
@@ -113,33 +114,31 @@ export class App extends React.Component<AppProps>
   public render()
   {
     return (
-      <span style={{width: "100%", height: "100%", display: "inline-block", verticalAlign: "top"}} 
+      <span style={{width: "100%", height: "100%", display: "inline-block", verticalAlign: "top"}}
             tabIndex={0}
             id="mainApp"
       >
+        <Tabs>
+          <Tab>
+            Write
+          </Tab>
+          <Tab>
+            Read
+          </Tab>
+          <Tab>
+            Add Markup
+          </Tab>
+          <Tab>
+            Stats
+          </Tab>
 
-        <button onClick={() => this.makeRequest()}>TEST</button>
-        <button onClick={() => runInAction(() => this.props.machine.newJournalEntry = !this.props.machine.newJournalEntry)}>
-          {this.props.machine.newJournalEntry ? "Add markup to existing entry" : "Create new journal entry"}
-        </button>
-        <button onClick={() => runInAction(() => this.props.machine.showDisplayJournalPlace = !this.props.machine.showDisplayJournalPlace)}>
-          Read journal
-        </button>
-        <br />
-        <br />
-
-
-        <div style={{width: "50%", display: "inline-block", verticalAlign: "top"}}>
-
-          {
-            this.props.machine.newJournalEntry && 
-            !this.props.machine.showDisplayJournalPlace &&
+          <TabPanel>
             <JournalWriter machine={this.props.machine.journalWriterMachine}/>
-          }
-
-          {
-            !this.props.machine.newJournalEntry && //           {/*<AddMarkupToExistingEntry machine={this.props.machine.addMarkupMachine} />*/}
-            !this.props.machine.showDisplayJournalPlace &&
+          </TabPanel>
+          <TabPanel>
+            <JournalReader machine={this.props.machine.journalReaderMachine}/>
+          </TabPanel>
+          <TabPanel>
             <div onKeyDown={(e: any) => {
               if (e.key === "Enter")
               {
@@ -160,13 +159,11 @@ export class App extends React.Component<AppProps>
                 <input id="placeToSelectText" />
               </div>
             </div>
-          }
-          {
-            this.props.machine.showDisplayJournalPlace &&
-            <JournalReader machine={this.props.machine.journalReaderMachine}/>
-          }
+          </TabPanel>
+          <TabPanel>
 
-        </div>
+          </TabPanel>
+        </Tabs>
 
       </span>
     );
@@ -195,7 +192,7 @@ interface EditorProps
 //     this.editorState = editorState;
 //   }
 
-//   public render() 
+//   public render()
 //   {
 //     return (
 //         <Editor editorState={this.editorState} onChange={this.onChange} />

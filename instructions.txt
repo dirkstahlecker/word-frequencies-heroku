@@ -8,3 +8,7 @@ create heroku app
 heroku git:remote -a [appname]
 git push heroku master
 
+
+
+connect to database: 
+heroku pg:psql

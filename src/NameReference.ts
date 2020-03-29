@@ -122,6 +122,7 @@ export class NameReference
         "kendall",
         "morgan",
         "natasha",
+        "alice",
         "dennis",
         "kam",
         "orlando",

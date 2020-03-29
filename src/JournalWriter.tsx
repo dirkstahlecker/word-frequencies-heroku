@@ -146,4 +146,20 @@ export class JournalWriter extends React.Component<JournalWriterProps>
       </div>
 		</>;
 	}
+
+	private getRandomInt(min: number, max: number): number
+	{
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+	}
+
+	componentDidMount()
+	{
+		//roughly every two months, suggest doing a deep dive journal entry
+		if (this.getRandomInt(0, 60) === 0)
+		{
+			alert("You should do a deep dive entry today!");
+		}
+	}
 }
