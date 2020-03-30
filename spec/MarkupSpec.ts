@@ -5,7 +5,7 @@ let jasmineTs = require("jasmine-ts");
 describe("Markup", () => {
   let markup: Markup;
 
-  it("should parse markup properly", () => {
+  it("should parse markup where first name isn't display name", () => {
     markup = Markup.create("[!!Hammer|Arthur_Hammer!!]");
     expect(markup.displayName).toEqual("Hammer");
     expect(markup.firstName).toEqual("Arthur");

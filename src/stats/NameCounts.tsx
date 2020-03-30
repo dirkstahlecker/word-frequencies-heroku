@@ -40,7 +40,7 @@ export class NameCounts extends React.Component<NameCountsProps>
       let wordElement: JSX.Element | null = <>{wordInfo.word}</>;
       if (wordInfo instanceof NameInfo)
       {
-        wordElement = Markup.getHtmlForMarkup((wordInfo as NameInfo).word);
+        wordElement = Markup.getHtmlForMarkup((wordInfo as NameInfo).markup);
       }
 
       nameInfo = <>

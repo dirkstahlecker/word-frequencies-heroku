@@ -41,9 +41,9 @@ export class JournalReaderMachine
 					{
 						return "";
 					}
-					if (piece.match(Markup.MARKUP_REGEX))
+					if (Markup.isMarkup(piece))
 					{
-						return Markup.getHtmlForMarkup(piece);
+						return Markup.getHtmlForMarkup(Markup.create(piece));
 					}
 					else if (piece.match(JournalReaderMachine.DATE_REGEX))
 					{

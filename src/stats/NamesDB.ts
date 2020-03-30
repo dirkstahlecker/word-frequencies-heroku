@@ -62,4 +62,9 @@ export class NameInfo extends WordInfo
     //we know it's markup since it's checked in the setter
     return Markup.create(this._word).displayName;
   }
+
+  public get markup(): Markup
+  {
+    return Markup.create(this._word)
+  }
 }
