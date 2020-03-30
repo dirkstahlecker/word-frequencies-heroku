@@ -120,6 +120,7 @@ export class App extends React.Component<AppProps>
             id="mainApp"
       >
         <Tabs>
+        <TabList>
           <Tab>
             Write
           </Tab>
@@ -132,6 +133,7 @@ export class App extends React.Component<AppProps>
           <Tab>
             Stats
           </Tab>
+        </TabList>
 
           <TabPanel>
             <JournalWriter machine={this.props.machine.journalWriterMachine}/>

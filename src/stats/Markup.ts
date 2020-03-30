@@ -13,12 +13,10 @@ export class Markup
     return Markup.MARKUP_REGEX.exec(markup);
   }
 
-  // public static create(displayName: string, firstName: string, lastName: string): void
-  // {
-  //   this._firstName = firstName;
-  //   this._lastName = lastName;
-  //   this._displayName = displayName;
-  // }
+  public static isMarkup(rawString: string): boolean
+  {
+    return Markup.MARKUP_REGEX.test(rawString);
+  }
 
   private constructor(displayName: string, firstName: string, lastName: string)
   {
@@ -27,12 +25,12 @@ export class Markup
     this._displayName = displayName;
   }
 
-  public static create(rawString: string): Markup | null
+  public static create(rawString: string): Markup
   {
     const pieces: RegExpExecArray | null = Markup.getMarkupPieces(rawString);
     if (pieces == null || pieces.length !== 4)
     {
-      return null
+      throw Error("Invalid markup");
     }
 
     const markupClass: Markup = new Markup(pieces[1], pieces[2], pieces[3]);

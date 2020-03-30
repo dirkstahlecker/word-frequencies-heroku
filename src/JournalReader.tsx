@@ -23,10 +23,16 @@ export class JournalReaderMachine
 		this.rawText = value; // = this.replaceMarkupWithDisplayName(value);
 	}
 
-	public renderJournal(): JSX.Element | null
+	public static splitOnMarkupPieces(text: string): string[]
 	{
 		//eslint-disable-next-line no-useless-escape
-		const pieces: string[] = this.rawText.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])|(\d{1,2}-\d{1,2}-\d{1,2}:)/); //split on markup and dates
+		const pieces: string[] = text.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])|(\d{1,2}-\d{1,2}-\d{1,2}:)/); //split on markup and dates
+		return pieces;
+	}
+
+	public renderJournal(): JSX.Element | null
+	{
+		const pieces: string[] = JournalReaderMachine.splitOnMarkupPieces(this.rawText);
 
 		return <div>
 			{
