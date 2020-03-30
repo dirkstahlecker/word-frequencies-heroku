@@ -1,3 +1,5 @@
+import * as React from "react";
+
 //stores a markup object
 export class Markup
 {
@@ -52,5 +54,23 @@ export class Markup
     return this._displayName;
   }
 
+  public static getHtmlForMarkup(rawMarkup: string): JSX.Element | null
+	{
+		const markup: Markup | null = Markup.create(rawMarkup);
+		// const firstName: string | null = MarkupUtils.getFirstNameFromMarkup(markup);
+		// const lastName: string | null = MarkupUtils.getLastNameFromMarkup(markup);
+		// const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
 
+		if (markup == null || markup.firstName == null || markup.lastName == null || markup.displayName == null)
+		{
+			return null;
+		}
+
+		return <span className="rendered-markup-display-name">
+			{markup.displayName}
+			<span className="tooltip">
+				{markup.firstName}&nbsp;{markup.lastName}
+			</span>
+		</span>;
+	}
 }

@@ -1,9 +1,10 @@
 import * as React from "react";
-import {observable, runInAction} from "mobx";
+import {observable, runInAction, action} from "mobx";
 import {observer} from "mobx-react";
 import {JournalReaderMachine} from "../JournalReader";
 import {WordInfo, NameInfo} from "./NamesDB";
 import {Markup} from "./Markup";
+import {NameCounts} from "./NameCounts";
 
 export interface StatsProps
 {
@@ -12,18 +13,28 @@ export interface StatsProps
 
 export class StatsMachine
 {
-  private journal: string = ""; //not observable - changing the journal needs a new stats object
+  @observable
+  private journal: string = "";
 
   // private namesDB: NamesDB = new NamesDB();
+  @observable
   public namesDict: Map<string, WordInfo> = new Map();
+
+  @observable
+  public dataFreshness: number = 0;
 
   constructor(journal: string)
   {
     // this.journal = journal; //TODO
-    this.journal = "1-1-20: Test journal [!!Colin|Colin_Poler!!] and " +
-      "[!!Phil|Phil_Seo!!].\n\n1-2-20: And [!!Colin|Colin_Poler!!].";
-    this.makeStats();
+    // this.journal = "1-1-20: Test journal [!!Colin|Colin_Poler!!] and " +
+    //   "[!!Phil|Phil_Seo!!].\n\n1-2-20: And [!!Colin|Colin_Poler!!].";
+    // this.makeStats();
   }
+
+  @action
+  public onJournalInputChange = (e: any) => {
+    this.journal = e.currentTarget.value;
+  };
 
   //remove null and empty pieces
   private cleansePieces(pieces: string[]): string[]
@@ -43,6 +54,7 @@ export class StatsMachine
     return ret;
   }
 
+  @action
   private makeNamesDict(pieces: string[]): void
   {
     pieces.forEach((piece: string) => {
@@ -61,10 +73,14 @@ export class StatsMachine
       }
     });
     // this.namesDB
+
+    this.dataFreshness++;
   }
 
-  private makeStats(): void
+  public makeStats(): void
   {
+    // const journal = document.getElementById("journalInputBox").value();
+
     let pieces: string[] = JournalReaderMachine.splitOnMarkupPieces(this.journal);
     pieces = this.cleansePieces(pieces);
     this.makeNamesDict(pieces);
@@ -81,19 +97,13 @@ export class Stats extends React.Component<StatsProps>
 
   render()
   {
-    let nameInfo: JSX.Element = <div/>;
-    this.machine.namesDict.forEach((wordInfo: WordInfo) => {
-      nameInfo = <>
-        {nameInfo}
-        <div>Name: {wordInfo.word}</div>
-        <div>Count: {wordInfo.count}</div>
-      </>
-    });
+    const x = this.machine.dataFreshness; //ignore
 
-    return <>
-      {
-        nameInfo
-      }
-    </>;
+    return <div>
+      <input type="text" id="journalInputBox" onChange={this.machine.onJournalInputChange}/>
+      <button onClick={() => this.machine.makeStats()}>Submit</button>
+
+      <NameCounts namesDict={this.machine.namesDict}/>
+    </div>;
   }
 }

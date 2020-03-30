@@ -43,7 +43,7 @@ export class JournalReaderMachine
 					}
 					if (piece.match(Markup.MARKUP_REGEX))
 					{
-						return this.getHtmlForMarkup(piece);
+						return Markup.getHtmlForMarkup(piece);
 					}
 					else if (piece.match(JournalReaderMachine.DATE_REGEX))
 					{
@@ -59,26 +59,6 @@ export class JournalReaderMachine
 				})
 			}
 		</div>;
-	}
-
-	private getHtmlForMarkup(rawMarkup: string): JSX.Element | null
-	{
-		const markup: Markup | null = Markup.create(rawMarkup);
-		// const firstName: string | null = MarkupUtils.getFirstNameFromMarkup(markup);
-		// const lastName: string | null = MarkupUtils.getLastNameFromMarkup(markup);
-		// const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
-
-		if (markup == null || markup.firstName == null || markup.lastName == null || markup.displayName == null)
-		{
-			return null;
-		}
-
-		return <span className="rendered-markup-display-name">
-			{markup.displayName}
-			<span className="tooltip">
-				{markup.firstName}&nbsp;{markup.lastName}
-			</span>
-		</span>;
 	}
 
 	// private replaceMarkupWithDisplayName(rawText: string): string
