@@ -17,6 +17,14 @@ export class NameCountsMachine
 @observer
 export class NameCounts extends React.Component<NameCountsProps>
 {
+  private sortMap(map: Map<string, WordInfo>): Map<string, WordInfo>
+  {
+    const mapSort = new Map([...map.entries()].sort((a: [string, WordInfo], b: [string, WordInfo]) => {
+      return b[1].count - a[1].count;
+    }));
+    return mapSort;
+  }
+
   private get machine(): NameCountsMachine
   {
     return this.props.machine as NameCountsMachine;
@@ -25,7 +33,9 @@ export class NameCounts extends React.Component<NameCountsProps>
   render()
   {
     let nameInfo: JSX.Element = <div/>;
-    this.props.namesDict.forEach((wordInfo: WordInfo) => {
+    const map = this.sortMap(this.props.namesDict)
+
+    map.forEach((wordInfo: WordInfo) => {
       nameInfo = <>
         {nameInfo}
         <div>Name: {wordInfo.word}</div>
