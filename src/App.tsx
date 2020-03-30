@@ -3,6 +3,7 @@ import {observable, runInAction} from "mobx";
 import {observer} from "mobx-react";
 import {JournalReader, JournalReaderMachine} from "./JournalReader";
 import {JournalWriter, JournalWriterMachine} from "./JournalWriter";
+import {Stats, StatsMachine} from "./stats/Stats";
 // import * as Modal from "react-modal";
 import Modal from "react-modal";
 // import {Editor, EditorState} from 'draft-js';
@@ -161,7 +162,9 @@ export class App extends React.Component<AppProps>
             </div>
           </TabPanel>
           <TabPanel>
-
+            <Stats
+              machine={new StatsMachine("TODO")}
+            />
           </TabPanel>
         </Tabs>
 

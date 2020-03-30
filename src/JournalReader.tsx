@@ -3,6 +3,7 @@ import * as React from "react";
 import {observable, action} from "mobx";
 import {observer} from "mobx-react";
 import {MarkupUtils} from "./MarkupUtils";
+import {Markup} from "./stats/Markup";
 import "./JournalReader.css";
 
 export interface JournalReaderProps
@@ -34,7 +35,7 @@ export class JournalReaderMachine
 					{
 						return "";
 					}
-					if (piece.match(MarkupUtils.MARKUP_REGEX))
+					if (piece.match(Markup.MARKUP_REGEX))
 					{
 						return this.getHtmlForMarkup(piece);
 					}
@@ -54,45 +55,46 @@ export class JournalReaderMachine
 		</div>;
 	}
 
-	private getHtmlForMarkup(markup: string): JSX.Element | null
+	private getHtmlForMarkup(rawMarkup: string): JSX.Element | null
 	{
-		const firstName: string | null = MarkupUtils.getFirstNameFromMarkup(markup);
-		const lastName: string | null = MarkupUtils.getLastNameFromMarkup(markup);
-		const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
+		const markup: Markup | null = Markup.create(rawMarkup);
+		// const firstName: string | null = MarkupUtils.getFirstNameFromMarkup(markup);
+		// const lastName: string | null = MarkupUtils.getLastNameFromMarkup(markup);
+		// const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
 
-		if (firstName == null || lastName == null || displayName == null)
+		if (markup == null || markup.firstName == null || markup.lastName == null || markup.displayName == null)
 		{
 			return null;
 		}
 
 		return <span className="rendered-markup-display-name">
-			{displayName}
+			{markup.displayName}
 			<span className="tooltip">
-				{firstName}&nbsp;{lastName}
+				{markup.firstName}&nbsp;{markup.lastName}
 			</span>
 		</span>;
 	}
 
-	private replaceMarkupWithDisplayName(rawText: string): string
-	{
-		while (true)
-		{
-			let markup: string | null = MarkupUtils.getFullMarkupFromString(rawText);
-			if (markup == null)
-			{
-				break;
-			}
-
-			const displayName: string | null = MarkupUtils.getDisplayNameFromMarkup(markup);
-			if (displayName == null)
-			{
-				console.error("Invalid markup was received from getFullMarkupFromString");
-				return "TODO";
-			}
-			rawText = rawText.replace(markup, displayName);
-		}
-		return rawText;
-	}
+	// private replaceMarkupWithDisplayName(rawText: string): string
+	// {
+	// 	while (true)
+	// 	{
+	// 		let markup: Markup | null = Markup.create(rawText);
+	// 		if (markup == null)
+	// 		{
+	// 			break;
+	// 		}
+	//
+	// 		const displayName: string | null = markup.displayName;
+	// 		if (displayName == null)
+	// 		{
+	// 			console.error("Invalid markup was received from getFullMarkupFromString");
+	// 			return "TODO"; //TODO
+	// 		}
+	// 		rawText = rawText.replace(markup, displayName);
+	// 	}
+	// 	return rawText;
+	// }
 }
 
 @observer
@@ -110,7 +112,7 @@ export class JournalReader extends React.Component<JournalReaderProps>
 			<input type="text" onChange={(e) => this.machine.updateRawText(e.currentTarget.value)}/>
 			<br/>
 			<br/>
-			
+
 			{this.machine.renderJournal()}
 		</div>;
 	}
