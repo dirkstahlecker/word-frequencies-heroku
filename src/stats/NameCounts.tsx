@@ -1,7 +1,8 @@
 import * as React from "react";
 import {observable, runInAction, action} from "mobx";
 import {observer} from "mobx-react";
-import {WordInfo} from "./NamesDB";
+import {WordInfo, NameInfo} from "./NamesDB";
+import {Markup} from "./Markup";
 
 export interface NameCountsProps
 {
@@ -36,10 +37,15 @@ export class NameCounts extends React.Component<NameCountsProps>
     const map = this.sortMap(this.props.namesDict)
 
     map.forEach((wordInfo: WordInfo) => {
+      let wordElement: JSX.Element | null = <>{wordInfo.word}</>;
+      if (wordInfo instanceof NameInfo)
+      {
+        wordElement = Markup.getHtmlForMarkup((wordInfo as NameInfo).word);
+      }
+
       nameInfo = <>
         {nameInfo}
-        <div>Name: {wordInfo.word}</div>
-        <div>Count: {wordInfo.count}</div>
+        <div>{wordInfo.count}: {wordInfo.word}</div>
       </>
     });
 
