@@ -27,6 +27,11 @@ export class Markup
     this._displayName = displayName;
   }
 
+	private static cleanMarkupPiece(piece: string): string
+	{
+		return piece.replace(/\s/g, "");
+	}
+
   public static create(rawString: string): Markup
   {
     const pieces: RegExpExecArray | null = Markup.getMarkupPieces(rawString);
@@ -35,7 +40,10 @@ export class Markup
       throw Error("Invalid markup");
     }
 
-    const markupClass: Markup = new Markup(pieces[1], pieces[2], pieces[3]);
+    const markupClass: Markup = new Markup(
+			Markup.cleanMarkupPiece(pieces[1]),
+			Markup.cleanMarkupPiece(pieces[2]),
+			Markup.cleanMarkupPiece(pieces[3]));
     return markupClass;
   }
 

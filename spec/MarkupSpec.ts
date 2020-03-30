@@ -18,6 +18,23 @@ describe("Markup", () => {
     expect(markup.firstName).toEqual("Adri");
     expect(markup.lastName).toEqual("Abou-Bakr");
   });
+
+  it("should trim spaces at beginning and end", () => {
+    markup = Markup.create("[!!Colin|Colin_ Poler!!]");
+    expect(markup.displayName).toEqual("Colin");
+    expect(markup.firstName).toEqual("Colin");
+    expect(markup.lastName).toEqual("Poler");
+
+    markup = Markup.create("[!!Colin|Colin_ Poler !!]");
+    expect(markup.lastName).toEqual("Poler");
+
+    markup = Markup.create("[!! Colin|Colin_Poler!!]");
+    expect(markup.displayName).toEqual("Colin");
+
+    markup = Markup.create("[!!Colin| Colin_Poler !!]");
+    expect(markup.firstName).toEqual("Colin");
+    expect(markup.lastName).toEqual("Poler");
+  });
 });
 
 export {};

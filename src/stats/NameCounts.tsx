@@ -45,14 +45,22 @@ export class NameCounts extends React.Component<NameCountsProps>
 
       nameInfo = <>
         {nameInfo}
-        <div>{wordInfo.count}: {wordInfo.word}</div>
+        <div>{wordInfo.count}: {wordElement}</div>
       </>
     });
 
-    return <>
-      {
-        nameInfo
-      }
-    </>;
+    return <div className="column-layout-wrapper">
+      <div className="column-layout-column">
+        {
+          nameInfo
+        }
+      </div>
+      <div className="column-layout-column">
+        Total Unique People: {map.size}
+      </div>
+      <div className="column-layout-column">
+        Column 3
+      </div>
+    </div>;
   }
 }
