@@ -14,6 +14,6 @@ export class Utils
   public static printDate(date: Date): string
   {
     const year: number = date.getFullYear() - 2000;
-    return date.getMonth() + "-" + date.getDay() + "-" + year;
+    return (date.getMonth() + 1) + "-" + date.getDate() + "-" + year;
   }
 }

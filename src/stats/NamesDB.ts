@@ -58,7 +58,9 @@ export class WordInfo
 
   private getSortedDates(): Date[]
   {
-    const sortedArray = Array.from(this._dates).sort();
+    const sortedArray = Array.from(this._dates).sort((a: Date, b: Date) => {
+      return a.getTime() - b.getTime();
+    });
     return sortedArray;
   }
 
