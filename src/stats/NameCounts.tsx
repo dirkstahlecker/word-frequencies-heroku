@@ -4,6 +4,7 @@ import {observer} from "mobx-react";
 import {WordInfo, NameInfo} from "./NamesDB";
 import {Markup} from "./Markup";
 import {NamesPerDay} from "./NamesPerDay";
+import {Utils} from "../Utils";
 
 export interface NameCountsProps
 {
@@ -46,7 +47,20 @@ export class NameCounts extends React.Component<NameCountsProps>
 
       nameInfo = <>
         {nameInfo}
-        <div>{wordInfo.count}: {wordElement}</div>
+        <div className="colunm-layout-wrapper">
+          <div className="column-layout-column">
+            {wordInfo.count}: {wordElement}
+          </div>
+          <div className="column-layout-column">
+            Unique days: {wordInfo.dates.size}
+          </div>
+          <div className="column-layout-column">
+            First appeared: {Utils.printDate(wordInfo.getFirstDate())}
+          </div>
+          <div className="column-layout-column">
+            Last appeared: {Utils.printDate(wordInfo.getLastDate())}
+          </div>
+        </div>
       </>
     });
 
@@ -59,9 +73,12 @@ export class NameCounts extends React.Component<NameCountsProps>
       <div className="column-layout-column">
         Total Unique People: {map.size}
       </div>
-      <div className="column-layout-column">
-        <NamesPerDay namesMap={map}/>
-      </div>
+
     </div>;
   }
 }
+
+
+// <div className="column-layout-column">
+//   <NamesPerDay namesMap={map}/>
+// </div>

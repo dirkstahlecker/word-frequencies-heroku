@@ -10,4 +10,10 @@ export class Utils
     const year: string = "20" + d[2];
     return new Date(Number(year), Number(month) - 1, Number(day));
   }
+
+  public static printDate(date: Date): string
+  {
+    const year: number = date.getFullYear() - 2000;
+    return date.getMonth() + "-" + date.getDay() + "-" + year;
+  }
 }

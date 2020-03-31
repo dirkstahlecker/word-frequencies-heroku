@@ -55,6 +55,23 @@ export class WordInfo
   {
     this._dates.clear();
   }
+
+  private getSortedDates(): Date[]
+  {
+    const sortedArray = Array.from(this._dates).sort();
+    return sortedArray;
+  }
+
+  public getFirstDate(): Date
+  {
+    return this.getSortedDates()[0];
+  }
+
+  public getLastDate(): Date
+  {
+    const sortedDates: Date[] = this.getSortedDates();
+    return sortedDates[sortedDates.length - 1];
+  }
 }
 
 export class NameInfo extends WordInfo
