@@ -3,6 +3,7 @@ import {observable, runInAction, action} from "mobx";
 import {observer} from "mobx-react";
 import {WordInfo, NameInfo} from "./NamesDB";
 import {Markup} from "./Markup";
+import {NamesPerDay} from "./NamesPerDay";
 
 export interface NameCountsProps
 {
@@ -59,7 +60,7 @@ export class NameCounts extends React.Component<NameCountsProps>
         Total Unique People: {map.size}
       </div>
       <div className="column-layout-column">
-        Column 3
+        <NamesPerDay namesMap={map}/>
       </div>
     </div>;
   }

@@ -9,11 +9,16 @@ export class WordInfo
 {
   protected _word: string;
   protected _count: number;
+  protected _dates: Set<Date> = new Set();
 
-  constructor(word: string, count: number)
+  constructor(word: string, count: number, date?: Date)
   {
     this._word = word;
     this._count = count;
+    if (date !== undefined)
+    {
+      this.addDate(date);
+    }
   }
 
   public get word(): string
@@ -35,17 +40,32 @@ export class WordInfo
   {
     this._count = value;
   }
+
+  public get dates(): Set<Date>
+  {
+    return this._dates;
+  }
+
+  public addDate(date: Date): void
+  {
+    this._dates.add(date);
+  }
+
+  public clearDates(): void
+  {
+    this._dates.clear();
+  }
 }
 
 export class NameInfo extends WordInfo
 {
-  constructor(word: string, count: number)
+  constructor(word: string, count: number, date?: Date)
   {
     if (!Markup.isMarkup(word))
     {
       throw Error("Must be valid markup to be a NameInfo");
     }
-    super(word, count);
+    super(word, count, date);
   }
 
   public set word(value: string)

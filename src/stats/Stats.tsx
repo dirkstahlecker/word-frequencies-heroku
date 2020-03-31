@@ -5,6 +5,7 @@ import {JournalReaderMachine} from "../JournalReader";
 import {WordInfo, NameInfo} from "./NamesDB";
 import {Markup} from "./Markup";
 import {NameCounts} from "./NameCounts";
+import {Utils} from "../Utils";
 
 export interface StatsProps
 {
@@ -57,17 +58,27 @@ export class StatsMachine
   @action
   private makeNamesDict(pieces: string[]): void
   {
+    let currentDate: string | null = null;
     pieces.forEach((piece: string) => {
-      if (Markup.isMarkup(piece))
+      if (JournalReaderMachine.isDate(piece))
+      {
+        currentDate = piece;
+      }
+      else if (currentDate == null)
+      {
+        return; //can't do anything if we don't have a date
+      }
+      else if (Markup.isMarkup(piece))
       {
         const wordInfo: WordInfo | undefined = this.namesDict.get(piece);
         if (wordInfo === undefined)
         {
-          this.namesDict.set(piece,  new NameInfo(piece, 1));
+          this.namesDict.set(piece,  new NameInfo(piece, 1, Utils.makeDate(currentDate)));
         }
         else
         {
           wordInfo.count = wordInfo.count + 1;
+          wordInfo.addDate(Utils.makeDate(currentDate));
           this.namesDict.set(piece, wordInfo);
         }
       }
@@ -81,7 +92,7 @@ export class StatsMachine
   {
     // const journal = document.getElementById("journalInputBox").value();
 
-    let pieces: string[] = JournalReaderMachine.splitOnMarkupPieces(this.journal);
+    let pieces: string[] = JournalReaderMachine.splitOnMarkupPiecesAndDates(this.journal);
     pieces = this.cleansePieces(pieces);
     this.makeNamesDict(pieces);
   }

@@ -23,7 +23,12 @@ export class JournalReaderMachine
 		this.rawText = value; // = this.replaceMarkupWithDisplayName(value);
 	}
 
-	public static splitOnMarkupPieces(text: string): string[]
+	public static isDate(piece: string): boolean
+	{
+		return JournalReaderMachine.DATE_REGEX.test(piece);
+	}
+
+	public static splitOnMarkupPiecesAndDates(text: string): string[]
 	{
 		//eslint-disable-next-line no-useless-escape
 		const pieces: string[] = text.split(/(\[!![^\|]+\|[^_]+_[^!]+!!\])|(\d{1,2}-\d{1,2}-\d{1,2}:)/); //split on markup and dates
@@ -32,7 +37,7 @@ export class JournalReaderMachine
 
 	public renderJournal(): JSX.Element | null
 	{
-		const pieces: string[] = JournalReaderMachine.splitOnMarkupPieces(this.rawText);
+		const pieces: string[] = JournalReaderMachine.splitOnMarkupPiecesAndDates(this.rawText);
 
 		return <div>
 			{
@@ -45,7 +50,7 @@ export class JournalReaderMachine
 					{
 						return Markup.getHtmlForMarkup(Markup.create(piece));
 					}
-					else if (piece.match(JournalReaderMachine.DATE_REGEX))
+					else if (JournalReaderMachine.isDate(piece))
 					{
 						return <>
 							<br/><br/>
