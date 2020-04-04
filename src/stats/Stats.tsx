@@ -50,7 +50,7 @@ export class StatsMachine
       {
         return;
       }
-      ret.push(piece);
+      ret.push(piece.trim());
     });
     return ret;
   }
@@ -70,18 +70,21 @@ export class StatsMachine
       }
       else if (Markup.isMarkup(piece))
       {
-        const nameInfo: NameInfo | undefined = this.namesDict.get(piece);
+        const markup: Markup = Markup.create(piece);
+        const key: string = markup.getKey();
+        const nameInfo: NameInfo | undefined = this.namesDict.get(key);
 
         if (nameInfo === undefined)
         {
-          const valueToSet: NameInfo = new NameInfo(piece, 1, Utils.makeDate(currentDate));
-          this.namesDict.set(valueToSet.getKey(), valueToSet);
+          const valueToSet: NameInfo = new NameInfo(markup, 1, Utils.makeDate(currentDate));
+          this.namesDict.set(key, valueToSet);
         }
         else
         {
           nameInfo.count = nameInfo.count + 1;
+          nameInfo.addDisplayName(markup.displayName); //TODO: what's the right way to do this?
           nameInfo.addDate(Utils.makeDate(currentDate));
-          this.namesDict.set(nameInfo.getKey(), nameInfo);
+          this.namesDict.set(key, nameInfo);
         }
       }
     });

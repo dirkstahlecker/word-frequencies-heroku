@@ -62,6 +62,13 @@ export class Markup
     return this._displayName;
   }
 
+	//key is used as the map key to group unique first/last name pairs regardless
+  //of display names
+  public getKey(): string
+  {
+    return this.firstName + "_" + this.lastName;
+  }
+
 	public static getHtmlForMarkup(markup: Markup): JSX.Element | null
 	{
 		if (markup == null || markup.firstName == null || markup.lastName == null || markup.displayName == null)

@@ -76,16 +76,18 @@ export class WordInfo
   }
 }
 
+//word is firstName_lastName
 export class NameInfo extends WordInfo
 {
-  constructor(word: string, count: number, date?: Date)
+  constructor(markup: Markup, count: number, date?: Date)
   {
-    if (!Markup.isMarkup(word))
-    {
-      throw Error("Must be valid markup to be a NameInfo");
-    }
-    super(word, count, date);
+    super(markup.getKey(), count, date);
+    this._markup = markup;
+    this.displayNames = [markup.displayName];
   }
+
+  public displayNames: string[];
+  private _markup: Markup;
 
   public set word(value: string)
   {
@@ -93,18 +95,23 @@ export class NameInfo extends WordInfo
     {
       throw Error("Must be valid markup to be a NameInfo");
     }
-    this._word = value;
+    this._word = Markup.create(value).getKey();
   }
 
   public get word(): string
   {
-    //we know it's markup since it's checked in the setter
-    return Markup.create(this._word).displayName;
+    return this.markup.displayName; //TODO:
   }
 
   public get markup(): Markup
   {
-    return Markup.create(this._word)
+    // return Markup.create(this._word)
+    return this._markup;
+  }
+
+  public addDisplayName(displayName: string): void
+  {
+
   }
 
   //display name doesn't matter - only first and last name pair is unique
@@ -118,6 +125,6 @@ export class NameInfo extends WordInfo
   //of display names
   public getKey(): string
   {
-    return this.markup.firstName + "_" + this.markup.lastName;
+    return this.markup.getKey();
   }
 }
