@@ -1,4 +1,5 @@
 import {Markup} from "./Markup";
+import * as React from "react";
 
 // export class NamesDB
 // {
@@ -74,6 +75,12 @@ export class WordInfo
     const sortedDates: Date[] = this.getSortedDates();
     return sortedDates[sortedDates.length - 1];
   }
+
+  public makeHtmlElememt(): JSX.Element | null
+  {
+    console.error("Not implemented");
+    return null;
+  }
 }
 
 //word is firstName_lastName
@@ -83,10 +90,10 @@ export class NameInfo extends WordInfo
   {
     super(markup.getKey(), count, date);
     this._markup = markup;
-    this.displayNames = [markup.displayName];
+    this.displayNames.add(markup.displayName);
   }
 
-  public displayNames: string[];
+  public displayNames: Set<String> = new Set();
   private _markup: Markup;
 
   public set word(value: string)
@@ -105,17 +112,16 @@ export class NameInfo extends WordInfo
 
   public get markup(): Markup
   {
-    // return Markup.create(this._word)
     return this._markup;
   }
 
   public addDisplayName(displayName: string): void
   {
-
+    this.displayNames.add(displayName);
   }
 
   //display name doesn't matter - only first and last name pair is unique
-  public static equals(a: NameInfo, b: NameInfo)
+  public static equals(a: NameInfo, b: NameInfo): boolean
   {
     return a.markup.firstName === b.markup.firstName
         && a.markup.lastName === b.markup.lastName;
@@ -126,5 +132,49 @@ export class NameInfo extends WordInfo
   public getKey(): string
   {
     return this.markup.getKey();
+  }
+
+  private makeTooltip(): JSX.Element
+  {
+    const markup: Markup = this.markup;
+
+    return <div>
+      <div>
+        {"Display Names: "}
+        {
+          Array.from(this.displayNames).map((displayName: String) => {
+            return <span key={this.getKey() + displayName}>
+              {displayName},&nbsp;
+            </span>;
+          })
+        }
+      </div>
+      <div>
+        Unique Days:
+      </div>
+      <div>
+        Average usages per day:
+      </div>
+      <div>
+
+      </div>
+    </div>;
+  }
+
+  public makeHtmlElememt(): JSX.Element | null
+  {
+    const markup: Markup = this.markup;
+    if (markup == null || markup.firstName == null || markup.lastName == null || markup.displayName == null)
+    {
+      return null;
+    }
+
+    //TODO: show multiple display names
+    return <span className="rendered-markup-display-name">
+      {markup.firstName + " " + markup.lastName}
+      <span className="tooltip">
+        {this.makeTooltip()}
+      </span>
+    </span>;
   }
 }

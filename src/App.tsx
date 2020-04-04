@@ -214,6 +214,7 @@ BUGS
 -need to have a story for name picker cancel
 -case sensitive (name popup only when name is capitalized) - or maybe only for particular names that are also common words (will)
 
+-spaces in names are removed somewhere
 
 FEATURES
 -
