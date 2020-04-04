@@ -9,7 +9,7 @@ import {Utils} from "../Utils";
 export interface NameCountsProps
 {
   machine?: NameCountsMachine;
-  namesDict: Map<string, WordInfo>;
+  namesDict: Map<string, NameInfo>;
 }
 
 export class NameCountsMachine
@@ -32,6 +32,8 @@ export class NameCounts extends React.Component<NameCountsProps>
   {
     return this.props.machine as NameCountsMachine;
   }
+
+  //TODO: display only unique first/last names, regardless of display names
 
   render()
   {

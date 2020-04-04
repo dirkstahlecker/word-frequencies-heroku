@@ -69,10 +69,11 @@ export class Markup
 			return null;
 		}
 
+		//TODO: show multiple display names
 		return <span className="rendered-markup-display-name">
-			{markup.displayName}
+			{markup.firstName + " " + markup.lastName}
 			<span className="tooltip">
-				{markup.firstName}&nbsp;{markup.lastName}
+				{markup.displayName}
 			</span>
 		</span>;
 	}

@@ -3,7 +3,6 @@ export class Utils
   public static makeDate(input: string): Date
   {
     input = input.substring(0, input.length - 1); //remove colon
-    const date: Date = new Date();
     const d: string[] = input.split("-");
     const month: string = d[0];
     const day: string = d[1];

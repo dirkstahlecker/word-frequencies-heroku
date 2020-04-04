@@ -2,7 +2,7 @@ import * as React from "react";
 import {observable, runInAction, action} from "mobx";
 import {observer} from "mobx-react";
 import {JournalReaderMachine} from "../JournalReader";
-import {WordInfo, NameInfo} from "./NamesDB";
+import {NameInfo} from "./NamesDB";
 import {Markup} from "./Markup";
 import {NameCounts} from "./NameCounts";
 import {Utils} from "../Utils";
@@ -19,7 +19,7 @@ export class StatsMachine
 
   // private namesDB: NamesDB = new NamesDB();
   @observable
-  public namesDict: Map<string, WordInfo> = new Map();
+  public namesDict: Map<string, NameInfo> = new Map();
 
   @observable
   public dataFreshness: number = 0;
@@ -66,20 +66,22 @@ export class StatsMachine
       }
       else if (currentDate == null)
       {
-        return; //can't do anything if we don't have a date
+        return; //can't do anything if we haven't seen a date yet
       }
       else if (Markup.isMarkup(piece))
       {
-        const wordInfo: WordInfo | undefined = this.namesDict.get(piece);
-        if (wordInfo === undefined)
+        const nameInfo: NameInfo | undefined = this.namesDict.get(piece);
+
+        if (nameInfo === undefined)
         {
-          this.namesDict.set(piece,  new NameInfo(piece, 1, Utils.makeDate(currentDate)));
+          const valueToSet: NameInfo = new NameInfo(piece, 1, Utils.makeDate(currentDate));
+          this.namesDict.set(valueToSet.getKey(), valueToSet);
         }
         else
         {
-          wordInfo.count = wordInfo.count + 1;
-          wordInfo.addDate(Utils.makeDate(currentDate));
-          this.namesDict.set(piece, wordInfo);
+          nameInfo.count = nameInfo.count + 1;
+          nameInfo.addDate(Utils.makeDate(currentDate));
+          this.namesDict.set(nameInfo.getKey(), nameInfo);
         }
       }
     });

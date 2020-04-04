@@ -106,4 +106,18 @@ export class NameInfo extends WordInfo
   {
     return Markup.create(this._word)
   }
+
+  //display name doesn't matter - only first and last name pair is unique
+  public static equals(a: NameInfo, b: NameInfo)
+  {
+    return a.markup.firstName === b.markup.firstName
+        && a.markup.lastName === b.markup.lastName;
+  }
+
+  //key is used as the map key to group unique first/last name pairs regardless
+  //of display names
+  public getKey(): string
+  {
+    return this.markup.firstName + "_" + this.markup.lastName;
+  }
 }
