@@ -10,7 +10,7 @@ export class WordInfo
 {
   protected _word: string;
   protected _count: number;
-  protected _dates: Set<Date> = new Set();
+  protected _dates: Date[] = []; //set can't identify duplicate dates
 
   constructor(word: string, count: number, date?: Date)
   {
@@ -42,19 +42,31 @@ export class WordInfo
     this._count = value;
   }
 
-  public get dates(): Set<Date>
+  public get dates(): Date[]
   {
     return this._dates;
   }
 
-  public addDate(date: Date): void
+//TODO: the set isn't keeping the dates unique
+  public addDate(newDate: Date): void
   {
-    this._dates.add(date);
+    //TODO: very inefficient
+    let found: boolean = false;
+    this._dates.forEach((date: Date) => {
+      if (date.getTime() === newDate.getTime())
+      {
+        found = true; //already here, nothing to do
+      }
+    });
+    if (!found)
+    {
+      this._dates.push(newDate);
+    }
   }
 
   public clearDates(): void
   {
-    this._dates.clear();
+    this._dates = [];
   }
 
   private getSortedDates(): Date[]

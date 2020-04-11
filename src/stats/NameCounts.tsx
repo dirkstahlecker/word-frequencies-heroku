@@ -33,6 +33,25 @@ export class NameCounts extends React.Component<NameCountsProps>
     return this.props.machine as NameCountsMachine;
   }
 
+  private displayDates(dates: Date[]): JSX.Element
+  {
+    let ret: JSX.Element = <div/>;
+    dates.forEach((date: Date) => {
+      let dateElement: JSX.Element | null = <>{Utils.printDate(date)}</>;
+
+      ret = <>
+        {ret}
+        <div className="colunm-layout-wrapper">
+          <div className="column-layout-column">
+            {dateElement}
+          </div>
+        </div>
+      </>
+    });
+
+    return ret;
+  }
+
   //TODO: display only unique first/last names, regardless of display names
 
   render()
@@ -54,8 +73,11 @@ export class NameCounts extends React.Component<NameCountsProps>
             {wordInfo.count}: {wordElement}
           </div>
           <div className="column-layout-column">
-            Unique days: {wordInfo.dates.size}
+            Unique days: {wordInfo.dates.length}
           </div>
+          {/*<div className="column-layout-column">
+            All dates: {this.displayDates(wordInfo.dates)}
+          </div>*/}
           <div className="column-layout-column">
             First appeared: {Utils.printDate(wordInfo.getFirstDate())}
           </div>

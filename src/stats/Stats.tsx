@@ -103,6 +103,8 @@ export class StatsMachine
   }
 }
 
+//TODO: unique days and total days are the same... why???
+
 @observer
 export class Stats extends React.Component<StatsProps>
 {

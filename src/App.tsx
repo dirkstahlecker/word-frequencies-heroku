@@ -5,12 +5,14 @@ import {JournalReader, JournalReaderMachine} from "./JournalReader";
 import {JournalWriter, JournalWriterMachine} from "./JournalWriter";
 import {GraphPlace} from "./stats/GraphPlace";
 import {Stats, StatsMachine} from "./stats/Stats";
+// import {D3App} from "./d3/app";
 // import * as Modal from "react-modal";
 import Modal from "react-modal";
 // import {Editor, EditorState} from 'draft-js';
 import axios from 'axios';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import 'react-tabs/style/react-tabs.css';
+// import {D3BarApp} from "./d3/d3bar/D3App";
 
 
 // const { Client } = require('pg');
@@ -173,7 +175,7 @@ export class App extends React.Component<AppProps>
             />
           </TabPanel>
           <TabPanel>
-            <GraphPlace/>
+            
           </TabPanel>
         </Tabs>
 
