@@ -3,6 +3,7 @@ import {observable, runInAction} from "mobx";
 import {observer} from "mobx-react";
 import {JournalReader, JournalReaderMachine} from "./JournalReader";
 import {JournalWriter, JournalWriterMachine} from "./JournalWriter";
+import {GraphPlace} from "./stats/GraphPlace";
 import {Stats, StatsMachine} from "./stats/Stats";
 // import * as Modal from "react-modal";
 import Modal from "react-modal";
@@ -133,6 +134,9 @@ export class App extends React.Component<AppProps>
           <Tab>
             Stats
           </Tab>
+          <Tab>
+            Graph Testing
+          </Tab>
         </TabList>
 
           <TabPanel>
@@ -167,6 +171,9 @@ export class App extends React.Component<AppProps>
             <Stats
               machine={new StatsMachine("TODO")}
             />
+          </TabPanel>
+          <TabPanel>
+            <GraphPlace/>
           </TabPanel>
         </Tabs>
 

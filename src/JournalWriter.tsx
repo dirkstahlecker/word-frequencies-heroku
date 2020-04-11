@@ -117,7 +117,7 @@ export class JournalWriter extends React.Component<JournalWriterProps>
 	render()
 	{
 		return <>
-			<NamePickerModal 
+			<NamePickerModal
 				machine={this.props.machine.namePickerModalMachine}
 				onRequestClose={(commit: boolean) => this.props.machine.handleModalCloseRequest(commit)}
 				isOpen={this.props.machine.showModal}
@@ -132,15 +132,15 @@ export class JournalWriter extends React.Component<JournalWriterProps>
 			<br />
 			<label htmlFor="journalEntry">Entry: </label>
 			<br />
-			<textarea id="journalEntry" 
-			          value={this.props.machine.journalText} 
+			<textarea id="journalEntry"
+			          value={this.props.machine.journalText}
 			          onChange={(e) => this.props.machine.updateJournalText(e)}
 			          style={{width: "90%", height: "200px"}}
 			/>
 			{/*<MyEditor />*/}
 			<br />
 			<button onClick={(e) => this.props.machine.createFinalText()}>Submit</button>
-	
+
       <div style={{width: "50%", display: "inline-block", verticalAlign: "top", whiteSpace: "pre-wrap"}}>
         {this.props.machine.finalText}
       </div>
@@ -157,7 +157,7 @@ export class JournalWriter extends React.Component<JournalWriterProps>
 	componentDidMount()
 	{
 		//roughly every two months, suggest doing a deep dive journal entry
-		if (this.getRandomInt(0, 60) === 0)
+		if (this.getRandomInt(0, 30) === 0)
 		{
 			alert("You should do a deep dive entry today!");
 		}
