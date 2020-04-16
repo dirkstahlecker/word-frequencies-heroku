@@ -8,6 +8,10 @@ import {NameReference} from "./NameReference";
 
 export class JournalWriterMachine
 {
+	public static DEEP_DIVE_INDICATOR: string = "[Deep Dive]";
+
+	public suggestDeepDive: boolean = this.getRandomInt(0, 30) === 0;
+
 	@observable
 	public journalText: string = "";
 
@@ -19,6 +23,9 @@ export class JournalWriterMachine
 
 	@observable
 	private dateStr: string = "";
+
+	@observable
+	public isDeepDiveEntry: boolean = this.suggestDeepDive;
 
 	public modalObj: NamePickerModal | null = null;
 
@@ -32,7 +39,8 @@ export class JournalWriterMachine
 	@action
 	public createFinalText(): void
 	{
-		this.finalText = this.dateStr + ": " + this.journalText;
+		const deepDiveText: string = this.isDeepDiveEntry ? JournalWriterMachine.DEEP_DIVE_INDICATOR : "";
+		this.finalText = this.dateStr + ": " + deepDiveText + " " + this.journalText;
 	}
 
 	@action
@@ -41,12 +49,24 @@ export class JournalWriterMachine
 		this.currentName = value;
 	}
 
+	@action
+	public updateDeepDive = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		this.isDeepDiveEntry = e.currentTarget.checked;
+	}
+
 	public namePickerModalMachine: NamePickerModalMachine = new NamePickerModalMachine();
 
 	@computed
 	public get showModal(): boolean
 	{
 		return this.currentName != null;
+	}
+
+	private getRandomInt(min: number, max: number): number
+	{
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 	}
 
 	public handleModalCloseRequest(commit: boolean): void
@@ -114,6 +134,11 @@ export interface JournalWriterProps
 @observer
 export class JournalWriter extends React.Component<JournalWriterProps>
 {
+	private get machine(): JournalWriterMachine
+	{
+		return this.props.machine;
+	}
+
 	render()
 	{
 		return <>
@@ -127,7 +152,13 @@ export class JournalWriter extends React.Component<JournalWriterProps>
 
 			<label htmlFor="dateEntry">Date: </label>
 			<br />
-			<input type="text" id="dateEntry" onChange={this.props.machine.updateDate} />
+			<input type="text" id="dateEntry" onChange={this.machine.updateDate} />
+			<label htmlFor="deepDiveCheckbox">Deep Dive?</label>
+			<input type="checkbox"
+				id="deepDiveCheckbox"
+				checked={this.machine.isDeepDiveEntry}
+				onChange={this.machine.updateDeepDive}
+			/>
 			<br />
 			<br />
 			<label htmlFor="journalEntry">Entry: </label>
@@ -147,17 +178,10 @@ export class JournalWriter extends React.Component<JournalWriterProps>
 		</>;
 	}
 
-	private getRandomInt(min: number, max: number): number
-	{
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-	}
-
 	componentDidMount()
 	{
-		//roughly every two months, suggest doing a deep dive journal entry
-		if (this.getRandomInt(0, 30) === 0)
+		//roughly every month, suggest doing a deep dive journal entry
+		if (this.machine.suggestDeepDive)
 		{
 			alert("You should do a deep dive entry today!");
 		}
