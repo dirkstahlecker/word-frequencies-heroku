@@ -16,7 +16,7 @@
     "draft-js": "^0.11.2",
     "http-proxy-middleware": "^0.20.0",
     "jasmine": "^3.5.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mobx": "^5.15.0",
     "mobx-react": "^6.1.4",
     "pg": "^7.18.2",
